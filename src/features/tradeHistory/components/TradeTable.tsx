@@ -86,7 +86,7 @@ export const TradeTable = () => {
       ) : (
         <div className="flex flex-col items-center -space-y-10">
           <Image
-            src="https://rsuite-admin-template.vercel.app/d6adac113dc4b6b20658fd12c480f4e4.svg"
+            src="/searchingSVG.svg"
             alt="No Data"
             layout="fixed"
             width={400}

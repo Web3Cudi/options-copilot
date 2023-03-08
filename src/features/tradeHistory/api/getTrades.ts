@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { useSetAtom } from "jotai";
-import { tradeDataAtom } from "src/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import { tagFilterAtom, tradeDataAtom } from "src/atoms";
 
 import { combineDailyTrades } from "@/utils/sort";
 import { supabase } from "@/utils/supabaseClient";
@@ -13,6 +13,7 @@ type TradeRange = {
 export const useGetTrades = (tradeRange?: TradeRange) => {
   const user = supabase.auth.user();
   const setTrades = useSetAtom(tradeDataAtom);
+  const tagFilter = useAtomValue(tagFilterAtom);
 
   const fetchTrades = async (tradeRange: TradeRange) => {
     const { data, error } = !!tradeRange
@@ -31,10 +32,16 @@ export const useGetTrades = (tradeRange?: TradeRange) => {
   };
 
   const getAllTrades = async () => {
-    const { data, error } = await supabase
-      .from("trade_records")
-      .select(`*`, { count: "exact" })
-      .eq("user_id", user.id);
+    let query = supabase.from("trade_records").select(`*`, { count: "exact" });
+
+    if (tagFilter.data.length) {
+      query = query.in(
+        "contract_id",
+        tagFilter.data.map((tag) => tag.contract_id)
+      );
+    }
+
+    const { data, error } = await query;
 
     return { data, error };
   };

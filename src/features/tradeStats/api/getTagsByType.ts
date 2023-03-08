@@ -8,7 +8,7 @@ export const useGetTagsByType = (tagType: "setup" | "mistake" | "custom") => {
   const fetchTagsByType = async (tagType: string) => {
     const { data, error } = await supabase
       .from("trade_details_tags")
-      .select("trade_tags!inner(tag_id,name)")
+      .select("*,trade_tags!inner(tag_id,name)")
       .eq("trade_tags.tag_type", tagType)
       .eq("trade_tags.user_id", user.id)
       .order("tag_id", { ascending: true });

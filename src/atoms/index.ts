@@ -4,11 +4,7 @@ import { getPagination, getTradeRangeTime } from "@/utils/helper";
 import { sortByDate } from "@/utils/sort";
 
 import { TIME_FRAMES } from "../constants";
-
-type SortType = {
-  name: "symbol" | "date" | "quantity" | "trade_price" | "pnl_realized";
-  ascending: boolean;
-};
+import { SortType, TagFilter } from "./types";
 
 export const timeFrameAtom = atom(TIME_FRAMES.ONE_MIN_TIMEFRAME);
 
@@ -35,9 +31,20 @@ export const sortedTrades = atom((get) => {
 
 export const paginatedTrades = atom((get) => {
   const trades = get(sortedTrades);
+  const tagFilter = get(tagFilterAtom);
   //observes changes on sortType
   get(sortType);
 
+  if (tagFilter.data.length) {
+    return trades.filter((trade) => {
+      return tagFilter.data.some((tag) => {
+        return (
+          tag.contract_id === trade.contract_id &&
+          trade.date_time.includes(tag.date)
+        );
+      });
+    });
+  }
   const currentPage = get(tradePageAtom);
   const { pageStart, pageEnd } = getPagination(currentPage);
   return trades.filter((_, index) => index >= pageStart && index <= pageEnd);
@@ -63,6 +70,11 @@ export const datePickerAtom = atom((get) => {
   const demo: [Date, Date] = [new Date(dateRange[0]), new Date(dateRange[1])];
 
   return demo;
+});
+
+export const tagFilterAtom = atom<TagFilter>({
+  name: null,
+  data: [],
 });
 /*
 TODO: Look into seperating this file between different features/global atoms
