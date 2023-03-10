@@ -1,3 +1,7 @@
+import { isSameDay } from "date-fns";
+
+import { TradeData, CalendarTradeData } from "@/interfaces/trade";
+
 import { PAGE_LIMIT } from "../constants";
 
 export const getPagination = (page: number, limit = PAGE_LIMIT) => {
@@ -53,3 +57,43 @@ export const timeToLocal = (originalTime: number) => {
     ) / 1000
   );
 };
+
+export const mergeTradesByDay = (
+  tradeArray: TradeData[]
+): CalendarTradeData[] =>
+  tradeArray?.reduce((accumulator, currentValue, currentIndex) => {
+    if (currentIndex == 0)
+      accumulator.push({
+        contract_id: currentValue.contract_id,
+        user_id: currentValue.user_id,
+        pnl_realized: currentValue.pnl_realized,
+        date_time: currentValue.date_time,
+        totalTrades: 1,
+      });
+    else {
+      if (
+        isSameDay(
+          new Date(currentValue.date_time),
+          new Date(accumulator[accumulator.length - 1].date_time)
+        )
+      ) {
+        let updatedPnlRealized =
+          currentValue.pnl_realized +
+          accumulator[accumulator.length - 1].pnl_realized;
+        accumulator[accumulator.length - 1] = {
+          ...accumulator[accumulator.length - 1],
+          pnl_realized: updatedPnlRealized,
+          totalTrades: accumulator[accumulator.length - 1].totalTrades + 1,
+        };
+      } else {
+        accumulator.push({
+          contract_id: currentValue.contract_id,
+          user_id: currentValue.user_id,
+          pnl_realized: currentValue.pnl_realized,
+          date_time: currentValue.date_time,
+          totalTrades: 1,
+        });
+      }
+    }
+    return accumulator;
+  }, []);

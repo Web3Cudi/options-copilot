@@ -1,5 +1,3 @@
-import React from "react";
-
 import { useAtomValue } from "jotai";
 import { Popover, Whisper } from "rsuite";
 
@@ -17,7 +15,7 @@ export const TradePopover = () => {
             {selectedTrade.map((data) => (
               <div key={data.id}>{`${data.quantity > 0 ? "Buy" : "Sell"} ${
                 data.quantity
-              } @ ${data.date_time.slice(11)}`}</div>
+              } x ${data.trade_price} @ ${data.date_time.slice(11)}`}</div>
             ))}
           </ul>
         </Popover>

@@ -1,11 +1,11 @@
-import React from "react";
+import { Calendar } from "@/components/calendar/Calendar";
 
 import Layout from "../components/Layout";
 
-const analytics = () => {
+const analytics: React.FC = () => {
   return (
     <Layout>
-      <div className="border-b-4 border-white ">Analytics</div>
+      <Calendar />
     </Layout>
   );
 };

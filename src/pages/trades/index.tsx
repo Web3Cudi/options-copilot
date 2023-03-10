@@ -1,11 +1,11 @@
-import React from "react";
-
 import { useAtomValue, useSetAtom } from "jotai";
-import { dateRangeAtom, dateRangeString } from "src/atoms";
+import { datePickerAtom, dateRangeAtom, dateRangeString } from "src/atoms";
 
+import { BackButton } from "@/components/Buttons/BackButton";
 import Layout from "@/components/Layout";
 import {
   CsvButtonUpload,
+  TagFilterBadge,
   TradeDatePicker,
   TradePagination,
   TradeTable,
@@ -16,6 +16,7 @@ import { supabase } from "@/utils/supabaseClient";
 const trades = ({ user }) => {
   const setTradeRange = useSetAtom(dateRangeAtom);
   const dateRangeStr = useAtomValue(dateRangeString);
+  const dateRange = useAtomValue(datePickerAtom);
   const { data, isSuccess } = useGetTrades(dateRangeStr);
 
   const handleSelectDate = (value) => {
@@ -31,8 +32,12 @@ const trades = ({ user }) => {
           <CsvButtonUpload user={user} />
         </div>
       </div>
+      <div className="flex absolute top-36 items-center space-x-4">
+        <BackButton />
+        <TagFilterBadge />
+      </div>
       <div className="absolute top-36 right-14 hidden md:inline-block">
-        <TradeDatePicker selectDate={handleSelectDate} />
+        <TradeDatePicker value={dateRange} selectDate={handleSelectDate} />
       </div>
 
       <TradeTable />

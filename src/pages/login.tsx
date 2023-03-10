@@ -1,186 +1,74 @@
 import { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 
-import useAuth from "../hooks/useAuth";
-
-interface Inputs {
-  email: string;
-  password: string;
-  confirm?: string;
-}
+import { LoginUI } from "@/features/auth/components/LoginUI";
+import { SignUpUI } from "@/features/auth/components/SignUpUI";
 
 const Login = () => {
-  const [isSigningIn, setIsSigningIn] = useState(true);
-  const [login, setLogin] = useState(true);
-  const { signIn, signUp } = useAuth();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm();
-  const watchPassword = watch("password");
-  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-    if (login) {
-      await signIn(email, password);
-    } else {
-      await signUp(email, password);
-    }
-  };
+  const [toggleSignUp, setToggleSignUp] = useState(false);
+  const iconList = [
+    {
+      name: "React",
+      logo: "/react-icon.svg",
+      link: "https://reactjs.org/",
+    },
+    {
+      name: "Typescript",
+      logo: "/typescript-icon.svg",
+      link: "https://www.typescriptlang.org/",
+    },
+    {
+      name: "TailwindCSS",
+      logo: "/tailwind-icon.svg",
+      link: "https://tailwindcss.com/",
+    },
+    {
+      name: "Supabase",
+      logo: "/supabase-icon.svg",
+      link: "https://supabase.com/",
+    },
+  ];
 
   return (
-    <div className="w-full h-screen flex justify-center items-center p-4 bg-gradient-to-b from-gray-800 via-gray-900 to-black  text-white">
-      <div className="relative w-[90rem] h-[50rem]  ">
-        <div className=" hidden md:block ">
-          <Image
-            className="rounded-xl"
-            src="/LoginBgImage.jpg"
-            alt="me"
-            layout="fill"
-          />
-        </div>
-
-        <div className="text-2xl bg-black bg-opacity-30 backdrop-blur-lg shadow-xl rounded drop-shadow-lg h-full w-full md:w-1/2 absolute right-0 top-0">
-          <div className="flex mt-8 justify-end px-10">
-            <button
-              className={`loginButton rounded-l-md ${
-                isSigningIn ? "bg-green-500" : "bg-gray-700"
-              } `}
-              onClick={() => {
-                setIsSigningIn(true), reset();
-              }}
+    <div className="h-screen flex">
+      <div className="relative  flex-1 flex-col bg-indigo-900 justify-center items-center hidden md:flex ">
+        <img
+          className="w-[50rem] h-[40rem] z-30"
+          src="https://sso.ftmo.com/auth/resources/wy13c/login/ftmo/static/svg/default/login_hero.svg"
+          alt=""
+        />
+        <div className="absolute bottom-56 bg-slate-700 w-full h-24 z-20" />
+        <div className="flex flex-row absolute bottom-0 bg-slate-800 w-full h-56 z-20 space-x-9 justify-evenly items-start pt-16">
+          {iconList.map((icon) => (
+            <div
+              key={icon.name}
+              className="flex-col xl:flex-row flex items-center space-x-2 text-white w-10 xl:w-28"
             >
-              Sign In
-            </button>
-            <button
-              className={`loginButton rounded-r-md ${
-                isSigningIn ? "bg-gray-700" : "bg-green-500"
-              } `}
-              onClick={() => {
-                setIsSigningIn(false), reset();
-              }}
-            >
-              Sign Up
-            </button>
-          </div>
-
-          <form
-            className="flex flex-col mt-20 px-6 md:px-10  space-y-8"
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="space-y-1 md:flex items-center md:space-x-3">
-              <h1
-                className={`text-3xl font-semibold ${
-                  isSigningIn
-                    ? "underline underline-offset-8 decoration-green-500"
-                    : ""
-                } `}
-              >
-                Sign In
-              </h1>
-              <p className="self-end">or</p>
-              <h1
-                className={`text-3xl font-semibold ${
-                  !isSigningIn
-                    ? "underline underline-offset-8 decoration-green-500"
-                    : ""
-                } `}
-              >
-                Sign Up
-              </h1>
-            </div>
-
-            <div className="space-y-6">
-              <label className="inline-block w-full">
-                <input
-                  className="w-full rounded bg-[#333333] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#454545]"
-                  type="email"
-                  placeholder="Email"
-                  {...register("email", { required: true })}
-                />
-                {errors.email && (
-                  <p className="p-1 text-[13px] font-light  text-orange-500">
-                    Please enter a valid email.
-                  </p>
-                )}{" "}
-              </label>
-              <label className="inline-block w-full">
-                <input
-                  className="w-full rounded bg-[#333333] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#454545]"
-                  type="password"
-                  placeholder="Password"
-                  // ref={register({})}
-                  name="password"
-                  {...register("password", {
-                    required: "You must specify a password",
-                    minLength: {
-                      value: 6,
-                      message: "Password must have at least 6 characters",
-                    },
-                  })}
-                />
-                {errors.password && (
-                  <p className="p-1 text-[13px] font-light  text-orange-500">
-                    {errors.password.message}
-                  </p>
-                )}
-              </label>
-              {!isSigningIn && (
-                <label className="inline-block w-full">
-                  <input
-                    className="w-full rounded bg-[#333333] px-5 py-3.5 placeholder-[gray] outline-none focus:bg-[#454545]"
-                    type="password"
-                    placeholder="Confirm Password"
-                    {...register("confirm", {
-                      required: "You must confirm password",
-
-                      validate: (value) =>
-                        value === watchPassword || "The passwords do not match",
-                    })}
+              <a href={icon.link} target="_blank">
+                <div className="bg-slate-500/50 rounded-full w-16 h-16 p-2 overflow-hidden">
+                  <Image
+                    layout="responsive"
+                    priority
+                    src={icon.logo}
+                    height={40}
+                    width={40}
+                    alt="Icons by Icons8"
                   />
-                  {errors.confirm && (
-                    <p className="p-1 text-[13px] font-light  text-orange-500">
-                      {errors.confirm.message}
-                    </p>
-                  )}
-                </label>
-              )}
+                </div>
+              </a>
+              <p>{icon.name}</p>
             </div>
-            <button
-              disabled={!isSigningIn}
-              className={`w-full rounded bg-gray-800 ${
-                isSigningIn ? "opacity-100" : "opacity-75"
-              }  py-3 font-semibold`}
-              onClick={() => setLogin(true)}
-              type="submit"
-            >
-              Sign In
-            </button>
-            <button
-              disabled={isSigningIn}
-              className={`w-full rounded bg-gray-800 ${
-                !isSigningIn ? "opacity-100" : "opacity-75"
-              }  py-3 font-semibold`}
-              onClick={() => setLogin(false)}
-              type="submit"
-            >
-              Sign Up
-            </button>
-          </form>
+          ))}
         </div>
       </div>
+      {toggleSignUp ? (
+        <SignUpUI toggleAuth={() => setToggleSignUp(!toggleSignUp)} />
+      ) : (
+        <LoginUI toggleAuth={() => setToggleSignUp(!toggleSignUp)} />
+      )}
     </div>
   );
 };
 
 export default Login;
-
-//TODO
-/*
- * DRY ->  Look to Refactor button styling more reusable
- * Create functionality for diff login providers ie github gmail
- */

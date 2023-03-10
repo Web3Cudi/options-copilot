@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { notify } from "@/components/Toast/ToastMessage";
+import { notify } from "@/components/toast/ToastMessage";
 import { ManualTrade } from "@/interfaces/trade";
 import { combineDailyTrades } from "@/utils/sort";
 import { supabase } from "@/utils/supabaseClient";

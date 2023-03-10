@@ -8,6 +8,14 @@ export interface CsvData {
   FifoPnlRealized: number;
 }
 
+export interface CalendarTradeData {
+  contract_id: number;
+  user_id: string;
+  pnl_realized: number;
+  date_time: string;
+  totalTrades: number;
+}
+
 export interface TradeData {
   contract_id: number;
   date_time: string;

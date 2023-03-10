@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { notify } from "@/components/Toast/ToastMessage";
+import { notify } from "@/components/toast/ToastMessage";
 import { supabase } from "@/utils/supabaseClient";
 
 const addTradeDetails = async (data) => {
