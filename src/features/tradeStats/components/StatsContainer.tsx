@@ -68,7 +68,12 @@ export const StatsContainer: React.FC = () => {
               : "text-white"
           }`}
         >
-          {!!tradeStats.totalPnL ? tradeStats?.totalPnL?.toFixed(2) : "N/A"}
+          {!!tradeStats.totalPnL
+            ? tradeStats?.totalPnL?.toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD",
+              })
+            : "N/A"}
         </div>
         <div className="stat-desc mt-1">{tradeStats?.totalTrades} Trades</div>
       </div>
@@ -76,7 +81,7 @@ export const StatsContainer: React.FC = () => {
       <div className="stat">
         <div
           className="stat-figure text-secondary tooltip tooltip-left"
-          data-tip={`Total Profit ${tradeStats.win?.toFixed()}`}
+          data-tip={`Total Profit ${tradeStats.win?.toFixed() ?? 0}`}
         >
           {thumbsUpIcon}
         </div>
@@ -84,14 +89,14 @@ export const StatsContainer: React.FC = () => {
         <div className="stat-value">
           {!!tradeStats.win
             ? (tradeStats?.win / tradeStats.totalTrades).toFixed(2)
-            : "N/A"}
+            : 0}
         </div>
       </div>
 
       <div className="stat">
         <div
           className="stat-figure text-secondary tooltip tooltip-left"
-          data-tip={`Total Loss ${tradeStats.loss?.toFixed()}`}
+          data-tip={`Total Loss ${tradeStats.loss?.toFixed() ?? 0}`}
         >
           {thumbsDownIcon}
         </div>
@@ -99,7 +104,7 @@ export const StatsContainer: React.FC = () => {
         <div className="stat-value">
           {!!tradeStats.loss
             ? (tradeStats?.loss / tradeStats.totalTrades).toFixed(2)
-            : "N/A"}
+            : 0}
         </div>
       </div>
     </div>

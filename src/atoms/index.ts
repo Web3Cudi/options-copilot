@@ -67,9 +67,12 @@ export const datePickerAtom = atom((get) => {
     return null;
   }
 
-  const demo: [Date, Date] = [new Date(dateRange[0]), new Date(dateRange[1])];
+  const formatedDate: [Date, Date] = [
+    new Date(dateRange[0]),
+    new Date(dateRange[1]),
+  ];
 
-  return demo;
+  return formatedDate;
 });
 
 export const tagFilterAtom = atom<TagFilter>({
