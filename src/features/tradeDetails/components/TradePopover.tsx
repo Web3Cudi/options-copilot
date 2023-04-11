@@ -1,6 +1,8 @@
 import { useAtomValue } from "jotai";
 import { Popover, Whisper } from "rsuite";
 
+import { sortByDate } from "@/utils/sort";
+
 import { tradeByIdAtom } from "../atom";
 
 export const TradePopover = () => {
@@ -12,7 +14,7 @@ export const TradePopover = () => {
       speaker={
         <Popover className="bg-black text-white">
           <ul>
-            {selectedTrade.map((data) => (
+            {sortByDate(selectedTrade).map((data) => (
               <div key={data.id}>{`${data.quantity > 0 ? "Buy" : "Sell"} ${
                 data.quantity
               } x ${data.trade_price} @ ${data.date_time.slice(11)}`}</div>

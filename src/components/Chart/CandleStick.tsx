@@ -138,7 +138,7 @@ const CandleStick = () => {
   };
   return (
     <div
-      className="relative"
+      className="relative cursor-crosshair"
       ref={chartRef}
       onKeyDown={() => handleKeyPress()}
       tabIndex={1}
