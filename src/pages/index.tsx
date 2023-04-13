@@ -25,7 +25,6 @@ const Home = () => {
 
   return (
     <Layout>
-      <button onClick={() => signOut()}>Log Out</button>
       <div className="flex justify-between items-end">
         <div className="text-3xl font-bold text-white">Dashboard</div>
         <TradeDatePicker value={dateRange} selectDate={handleSelectDate} />
