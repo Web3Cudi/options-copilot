@@ -3,6 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import useAuth from "@/hooks/useAuth";
+
 import { TABLE_BREAK_POINT } from "../constants";
 import { useWindowSize } from "../hooks/useWindowSize";
 import {
@@ -11,6 +13,7 @@ import {
   SideBarToggleIcon,
   ReportIcon,
   AnalyticsIcon,
+  LogOutIcon,
 } from "./icons";
 
 const menuItems = [
@@ -28,6 +31,7 @@ const Sidebar = () => {
   const [isCollapsible, setIsCollapsible] = useState(false);
   const router = useRouter();
   const windowSize = useWindowSize();
+  const { signOut } = useAuth();
 
   useEffect(() => {
     if (windowSize.width <= TABLE_BREAK_POINT) {
@@ -119,6 +123,16 @@ const Sidebar = () => {
           })}
         </div>
       </div>
+
+      {!toggleCollapse ? (
+        <button className="btn btn-outline btn-info" onClick={() => signOut()}>
+          LogOut
+        </button>
+      ) : (
+        <button className="w-10 h-10" onClick={() => signOut()}>
+          <LogOutIcon />
+        </button>
+      )}
     </div>
   );
 };
