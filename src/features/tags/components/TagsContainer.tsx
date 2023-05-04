@@ -52,7 +52,7 @@ export const TagsContainer = () => {
   };
 
   return (
-    <div className="flex-1 mt-5 bg-base-100 p-4 rounded-lg mr-12 h-[25rem] overflow-auto">
+    <div className="mt-5 bg-base-100 p-4 rounded-lg mr-12 h-[25rem] overflow-auto">
       <div className="flex flex-col space-y-3 relative">
         <div className="tabs self-center justify-between">
           {["setup", "mistake", "custom"].map(

@@ -55,12 +55,12 @@ export const StatsContainer: React.FC = () => {
     </svg>
   );
   return isSuccess ? (
-    <div className="stats w-[70rem]">
+    <div className="stats stats-vertical md:stats-horizontal">
       <div className="stat">
         <div className="stat-figure text-secondary"></div>
         <div className="stat-title">Total P&L</div>
         <div
-          className={`stat-value ${
+          className={`stat-value text-2xl md:text-4xl ${
             !!tradeStats.totalPnL
               ? tradeStats.totalPnL > 0
                 ? "text-green-500"
@@ -80,13 +80,13 @@ export const StatsContainer: React.FC = () => {
 
       <div className="stat">
         <div
-          className="stat-figure text-secondary tooltip tooltip-left"
+          className="stat-figure mt-3  text-secondary tooltip tooltip-left"
           data-tip={`Total Profit ${tradeStats.win?.toFixed() ?? 0}`}
         >
           {thumbsUpIcon}
         </div>
-        <div className="stat-title">Avg Winners</div>
-        <div className="stat-value">
+        <div className="stat-title text-sm">Avg Winners</div>
+        <div className="stat-value text-2xl md:text-4xl">
           {!!tradeStats.win
             ? (tradeStats?.win / tradeStats.totalTrades).toFixed(2)
             : 0}
@@ -95,13 +95,13 @@ export const StatsContainer: React.FC = () => {
 
       <div className="stat">
         <div
-          className="stat-figure text-secondary tooltip tooltip-left"
+          className="stat-figure mt-3 text-secondary tooltip tooltip-left"
           data-tip={`Total Loss ${tradeStats.loss?.toFixed() ?? 0}`}
         >
           {thumbsDownIcon}
         </div>
         <div className="stat-title">Avg Losers</div>
-        <div className="stat-value">
+        <div className="stat-value text-2xl md:text-4xl">
           {!!tradeStats.loss
             ? (tradeStats?.loss / tradeStats.totalTrades).toFixed(2)
             : 0}

@@ -5,11 +5,15 @@ import { sub } from "date-fns";
 import { useAtomValue } from "jotai";
 import { createChart, ColorType } from "lightweight-charts";
 
+import { LAPTOP_BREAK_POINT, LAPTOP_LG_BREAK_POINT } from "@/constants/index";
 import { useGetTrades } from "@/features/tradeHistory";
 import { statsDateStringAtom } from "@/features/tradeStats/atoms";
+import { useWindowSize } from "@/hooks/useWindowSize";
 import { mergeTradesByDay } from "@/utils/helper";
 
 const LineChart = () => {
+  const windowSize = useWindowSize();
+
   const dateRangeStr = useAtomValue(statsDateStringAtom);
   const { data } = useGetTrades(dateRangeStr);
 
@@ -41,10 +45,14 @@ const LineChart = () => {
 
     return arr;
   }, []);
-
   useEffect(() => {
     const chart = createChart(chartContainerRef.current, {
-      width: 500,
+      width:
+        windowSize.width >= LAPTOP_LG_BREAK_POINT
+          ? 400
+          : windowSize.width >= LAPTOP_BREAK_POINT
+          ? 700
+          : 450,
       height: 400,
       rightPriceScale: {
         autoScale: false,

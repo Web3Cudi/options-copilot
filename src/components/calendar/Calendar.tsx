@@ -44,7 +44,7 @@ export const Calendar: React.FC = () => {
   };
 
   return (
-    <div className="w-[70rem] border-t border-l">
+    <div className=" border-t border-l">
       <div
         data-theme="night"
         className="grid grid-cols-7 items-center justify-center text-center "
@@ -113,8 +113,9 @@ export const Calendar: React.FC = () => {
                     handleClick={(data) => handleClick(data)}
                   >
                     {index + 1}
-                    <span className="w-full text-right ml-9">
-                      {trade.totalTrades} Trade {trade.pnl_realized.toFixed(2)}
+                    <span className="w-full text-right ml-1">
+                      {trade.totalTrades} Trade <br />
+                      {trade.pnl_realized.toFixed(2)}
                     </span>
                   </Cell>
                 );

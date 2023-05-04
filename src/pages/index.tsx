@@ -8,14 +8,12 @@ import { StatsContainer } from "@/features/tradeStats";
 import { dateStatPickerAtom, statsDateAtom } from "@/features/tradeStats/atoms";
 
 import Layout from "../components/Layout";
-import useAuth from "../hooks/useAuth";
 import { supabase } from "../utils/supabaseClient";
 
 const LineChart = dynamic(() => import("@/components/Chart/LineChart"), {
   ssr: false,
 });
 const Home = () => {
-  const { signOut } = useAuth();
   const setTradeRange = useSetAtom(statsDateAtom);
   const dateRange = useAtomValue(dateStatPickerAtom);
 
@@ -25,18 +23,20 @@ const Home = () => {
 
   return (
     <Layout>
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col md:flex-row justify-between items-start space-y-5  md:space-y-0">
         <div className="text-3xl font-bold text-white">Dashboard</div>
-        <TradeDatePicker value={dateRange} selectDate={handleSelectDate} />
+        <div>
+          <TradeDatePicker value={dateRange} selectDate={handleSelectDate} />
+        </div>
       </div>
-      <div className="flex space-y-5">
-        <div className="flex-1">
+      <div className="flex flex-col xl:flex-row space-y-5">
+        <div className="flex-shrink order-2 xl:order-1">
           <TagsContainer />
-          <div className="relative flex-1 mt-5 bg-base-100 p-4 rounded-lg mr-12 max-h-[27rem]">
+          <div className="relative flex-1 mt-5 bg-base-100 p-4 rounded-lg mr-12 max-h-[27rem] xl:max-w-md">
             <LineChart />
           </div>
         </div>
-        <div className="space-y-5">
+        <div className="space-y-5 flex flex-grow flex-col order-1">
           <StatsContainer />
           <Calendar />
         </div>

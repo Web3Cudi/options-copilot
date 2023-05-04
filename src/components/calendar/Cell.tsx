@@ -16,7 +16,11 @@ export const Cell: React.FC<Props> = ({
     <div
       onClick={isDisabled ? undefined : () => handleClick([date, date])}
       className={`text-white h-32 border-b border-r flex items-start justify-start p-3 select-none transition-colors  
-      ${isDisabled ? "" : "hover:bg-primary-content cursor-pointer"}
+      ${
+        isDisabled
+          ? ""
+          : "hover:bg-primary-content cursor-pointer text-xs lg:text-sm"
+      }
       ${highlightColor}`}
     >
       {children}
